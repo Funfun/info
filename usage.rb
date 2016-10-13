@@ -24,8 +24,9 @@ messages = [
   Message.new(12, 11, 8, 4)   # reply (sent)    # skipped by us
 ]
 
+skip_ids = [2, 4].freeze
 messages.each do |message|
-  next if message.mail_box_id == 4
+  next if skip_ids.include?(message.mail_box_id)
   conversations.add_message(message.from_id, message.to_id, message.id)
 end
 
@@ -33,7 +34,6 @@ end
 # "uuid" => [1, 3, 5]
 puts conversations.length
 puts conversations.to_s
-
 # next step:
 # Save collection to db
 
