@@ -12,13 +12,16 @@ conversations = ConversationCollection.new
 # mocked example
 messages = [
   Message.new(12, 11, 1, 1),  # new (inbox)
-  Message.new(11, 12, 2, 4),  # new (sent)     # skipped
+  Message.new(12, 11, 2, 4),  # new (sent)      # skipped by us
 
   Message.new(11, 12, 3, 1),  # reply (inbox)
-  Message.new(12, 11, 4, 4),  # reply (sent)   # skipped
+  Message.new(11, 12, 4, 4),  # reply (sent)    # skipped by us
 
-  Message.new(11, 12, 5, 3),  # archived
-  Message.new(12, 11, 6, 4)   # new (sent)     # skipped
+  Message.new(11, 12, 5, 3),  # archived (by 12)
+  Message.new(11, 12, 6, 4),  # new (sent)      # skipped by us
+
+  Message.new(12, 11, 7, 2),  # deleted (by 11) # skipped by us
+  Message.new(12, 11, 8, 4)   # reply (sent)    # skipped by us
 ]
 
 messages.each do |message|
@@ -50,7 +53,7 @@ db_conversations.each do |conv|
   p2 = conv.recipient_id
   local_conversation = collection.find(p1, p2)
   if local_conversation
-    intersection.assoc(conv, intersected)
+    intersection.assoc(conv.id, intersected.key(p1, p2))
   end
 end
 intersection.save

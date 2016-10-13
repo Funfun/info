@@ -4,7 +4,7 @@ class CollectionsIntersection
   end
 
   def assoc(conv, intersected)
-    @collection[intersected.key(p1, p2)] ||= conv.id
+    @collection[intersected] ||= conv
   end
 
   def save
